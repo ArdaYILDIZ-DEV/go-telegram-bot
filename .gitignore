@@ -10,3 +10,4 @@ Thumbs.db
 *.out
 #application
 *.exe
+*.log
