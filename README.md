@@ -1,153 +1,203 @@
-🌟 Tanıtım
-Go Telegram Asistan Botu, sunucu yönetiminizi Telegram üzerinden gerçekleştirmenizi sağlayan gelişmiş bir otomasyon çözümüdür. Basit bir bot olmanın ötesinde, Go'nun eşzamanlılık gücünü kullanarak:
+# Go Telegram Asistan Botu
 
-🕒 Arka planda çalışan akıllı zamanlayıcılar
+<p align="center">
+  <strong>Go ile yazılmış, sunucunuzu Telegram üzerinden yönetmek için tasarlanmış, yüksek performanslı ve modüler bir otomasyon aracı.</strong>
+</p>
 
-📁 Gerçek zamanlı dosya sistemi izleme
+<p align="center">
+  <img src="https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go">
+  <img src="https://img.shields.io/badge/FFmpeg-00780B?style=for-the-badge&logo=ffmpeg&logoColor=white" alt="FFmpeg">
+  <img src="https://img.shields.io/badge/yt--dlp-838383?style=for-the-badge&logo=youtube&logoColor=white" alt="yt-dlp">
+</p>
 
-⚡ Uzun süren görevler için engellemesiz işlemler
+---
 
-🔄 Proaktif sunucu yönetimi
+**Go Telegram Asistan Botu**, sadece komut çalıştıran basit bir botun çok ötesindedir. Arka planda çalışan zamanlayıcılar, dosya sistemi olaylarını anlık olarak dinleyen izleyiciler ve Go'nun eşzamanlılık (concurrency) gücü sayesinde, sunucunuzla proaktif bir şekilde etkileşim kuran kişisel bir asistandır. Dosyalarınızı organize eder, ağ sorunlarını size bildirir ve uzun süren görevleri sizi engellemeden arka planda halleder.
 
-sağlayarak kişisel bir sunucu asistanı deneyimi sunar.
+> Bu proje, bir sunucu üzerindeki kontrolü, güvenliği ve otomasyonu doğrudan Telegram arayüzüne taşıyarak uzaktan yönetimi kolaylaştırmak amacıyla geliştirilmiştir.
 
-graph LR
-A[Telegram Kullanıcısı] --> B[Bot Komutları]
-B --> C[Dosya Yönetimi]
-B --> D[Sistem Kontrolü]
-B --> E[Medya İşleme]
-B --> F[Otomatik Raporlama]
-C --> G[Metadata Sistemi]
-D --> H[Görev Yöneticisi]
-E --> I[Akıllı İndirme]
-F --> J[Proaktik İzleme]
+---
 
+## ✨ Öne Çıkan Özellikler
 
-🚀 Öne Çıkan Özellikler
-📁 Gelişmiş Dosya Yönetimi
-Akıllı Listeleme & Arama: /liste, /klasor, /ara komutlarıyla tüm alt klasörlerde arama
+<br/>
+<p align="center">
+  <img src="https://img.shields.io/badge/-Gelişmiş%20Dosya%20Yönetimi-007ACC?style=for-the-badge" alt="Dosya Yönetimi">
+</p>
 
-Güvenli Operasyonlar: Onaylı silme (/sil), metadata korumalı yeniden adlandırma (/yenidenadlandir)
+- **Listeleme ve Arama:**
+  - `/liste`: Ana dizindeki dosyaları listeler.
+  - `/klasor <kategori>`: Belirli bir kategori altındaki dosyaları gösterir.
+  - `/ara <kelime>`: **Tüm alt klasörlerde** dosya adlarına göre arama yapar ve konumlarıyla birlikte raporlar.
+- **Dosya Transferi ve Manipülasyonu:**
+  - `/getir <dosya>`: Sunucudaki herhangi bir dosyayı, açıklamasıyla birlikte Telegram'a gönderir.
+  - `/sil <dosya>`: Yanlışlıkla silmeleri önlemek için **inline butonlar ile onay isteyen** güvenli bir silme mekanizması sunar.
+  - `/yenidenadlandir <eski> <yeni>`: Bir dosyanın adını değiştirir; eğer dosyanın bir açıklaması varsa, bu açıklama yeni dosyaya taşınır.
+- **Metadata (Açıklama) Sistemi:**
+  - `/aciklama_ekle <dosya> <açıklama>`: Dosyalara kalıcı olarak `metadata.json` dosyasında saklanan açıklamalar ekler.
+  - `/aciklama_ara <kelime>`: Sadece dosya adlarında değil, **dosya açıklamalarının içinde de** arama yapar.
 
-Metadata Sistemi: Dosyalara kalıcı açıklamalar ekleme ve içeriklerde arama
+<br/>
+<p align="center">
+  <img src="https://img.shields.io/badge/-Kapsamlı%20Sistem%20Kontrolü-007ACC?style=for-the-badge" alt="Sistem Kontrolü">
+</p>
 
-⚙️ Sistem Kontrol & İzleme
-İnteraktif Görev Yöneticisi: /gorevler ile canlı işlem takibi
+- **İnteraktif Görev Yöneticisi:**
+  - `/gorevler`: Sunucuda çalışan tüm işlemleri **sayfalı ve sıralanabilir** bir arayüzde sunar. CPU veya RAM kullanımına göre artan/azalan şekilde sıralama yapabilirsiniz.
+  - `/kapat <PID>`: Görev yöneticisinden veya manuel olarak belirlediğiniz bir işlemi anında sonlandırır.
+- **Güvenli Komut/Betik Çalıştırma:**
+  - `/calistir <yol> <süre>`: `.bat`, `.ps1` veya diğer çalıştırılabilir dosyaları, belirtilen **zaman aşımı (timeout)** süresiyle çalıştırır. Eğer betik bu süre içinde tamamlanmazsa, otomatik olarak sonlandırılır ve o ana kadarki çıktısı size gönderilir.
+- **Ekran Görüntüsü ve Kaydı:**
+  - `/ss`: Windows üzerinde PowerShell kullanarak anlık, yüksek çözünürlüklü bir ekran görüntüsü alır.
+  - `/kayit_al` & `/kayit_durdur`: `FFmpeg` kullanarak ekran kaydı yapar. Kayıt durdurulduğunda, video dosyası işlenir ve otomatik olarak size gönderilir.
 
-Zaman Aşımlı Betik Çalıştırma: /calistir ile güvenli komut yürütme
+<br/>
+<p align="center">
+  <img src="https://img.shields.io/badge/-Medya%20İndirme%20ve%20İşleme-007ACC?style=for-the-badge" alt="Medya İşlemleri">
+</p>
 
-Gerçek Zamanlı Ekran Yönetimi: /ss ve /kayit_al ile uzaktan kontrol
+- **Akıllı İndirme Motoru:**
+  - `/indir <URL> [kalite] [format]`: `yt-dlp`'nin esnek format seçimi (`-f`) yeteneğini kullanarak, "en iyi video (<=1080p, mp4) + en iyi ses" gibi karmaşık kurallarla indirme yapar. İlerleme durumu anlık olarak mesaj düzenlenerek size bildirilir.
+  - `/indir_ses <URL> [format]`: Videoyu tamamen atlayarak sadece en iyi ses akışını indirir ve `opus`, `mp3`, `flac` gibi formatlara dönüştürür.
+- **Yüksek Hızlı Video Düzenleme:**
+  - `/kes <dosya> <baş> <bitiş>`: FFmpeg'in `-c copy` parametresini kullanarak videoyu yeniden kodlamadan **saniyeler içinde** keser. Bu, saatler sürebilecek işlemleri anlık hale getirir.
+- **Optimize Edilmiş GIF Üretimi:**
+  - `/gif_yap <dosya> <baş> <bitiş>`: Standart GIF oluşturmanın ötesinde, videodan önce bir renk paleti çıkarıp sonra bu paleti kullanarak GIF'i oluşturan iki aşamalı bir `filtergraph` kullanır. Bu, çok daha yüksek renk doğruluğu ve daha küçük dosya boyutu sağlar.
 
-🎬 Medya İşleme & İndirme
-Akıllı İndirme Motoru: /indir ve /indir_ses ile optimize edilmiş içerik indirme
+<br/>
+<p align="center">
+  <img src="https://img.shields.io/badge/-Akıllı%20Otomasyonlar-007ACC?style=for-the-badge" alt="Otomasyonlar">
+</p>
 
-Saniyeler İçinde Video Kesme: /kes ile yeniden kodlama olmadan hızlı kesim
+- **Magic Folder (`TelegramaGonder`):** Bu klasöre sürükleyip bıraktığınız herhangi bir dosya, `fsnotify` dosya sistemi izleyicisi tarafından anında algılanır, size gönderilir ve ardından sunucudan temizlenir.
+- **Otomatik Raporlama ve Bakım:**
+  - **Saatlik Sistem Raporu:** Her saat başı, `/sistem_bilgisi` ve `/hiz_testi` komutlarının birleşiminden oluşan detaylı bir raporu otomatik olarak size gönderir.
+  - **Otomatik Kategorizasyon:** `/duzenle` komutu, periyodik olarak çalışarak "Gelenler" klasörünü düzenli tutar.
+- **Proaktif Ağ İzleme:**
+  - `/izle`: İnternet bağlantısını `ping` ile sürekli izler. Bağlantı kesildiğinde ve geri geldiğinde **sadece durum değiştiğinde** bildirim gönderir, gereksiz mesajları önler.
+  - **Port Monitörü:** `/portlar` komutunun izlediği portların durumu değiştiğinde (örn: bir servis çöktüğünde veya başladığında) anında bildirim alırsınız.
 
-Optimize GIF Üretimi: /gif_yap ile yüksek kaliteli, küçük boyutlu GIF'ler
+---
 
-🤖 Akıllı Otomasyonlar
+### Mimarî ve Tasarım Felsefesi
+> Bu bot, "sorumlulukların ayrılması" ve "engellemesiz operasyon" prensipleri üzerine kurulmuştur.
+-   **Modülerlik:** Her dosya (`auth.go`, `file_manager.go`, `scheduler.go` vb.) tek bir sorumluluk alanına odaklanır.
+-   **Eşzamanlılık (Concurrency):** `goroutine` ve `channel`'lar, indirme, betik çalıştırma gibi uzun süren işlemlerin botun ana akışını engellemesini önler. Bot, aynı anda birden çok komuta yanıt verebilir.
+-   **Durum Güvenliği (State Safety):** Paylaşılan verilere (metadata, kayıt durumu vb.) erişim, `sync.Mutex` kilitleri ile korunarak "race condition" hatalarının önüne geçilir.
+-   **Harici Araç Entegrasyonu:** `yt-dlp`, `ffmpeg` gibi kendini kanıtlamış, güçlü komut satırı araçlarını bir arayüz arkasında birleştirir.
 
-sequenceDiagram
-    Kullanıcı->>+Bot: Dosyayı TelegramaGonder klasörüne atar
-    Bot->>+FSWatcher: Dosya değişikliği algılandı
-    FSWatcher->>+Bot: Olay bildirimi
-    Bot->>+Kullanıcı: Dosyayı Telegram'a gönder
-    Bot->>+Sunucu: Orijinal dosyayı temizle
+---
 
+## 🚀 Hızlı Başlangıç
 
-Magic Folder: Dosya bırakma ile otomatik gönderim
+### Gereksinimler
 
-Saatlik Sistem Raporu: Otomatik performans ve ağ izleme
+- **Go:** `1.18` veya üstü.
+- **Harici Araçlar:** Botun tüm özelliklerini kullanabilmek için aşağıdaki CLI araçlarının sisteminizde kurulu ve **PATH** ortam değişkenine eklenmiş olması gerekir:
+  - **[yt-dlp](https://github.com/yt-dlp/yt-dlp):** Video ve ses indirmek için.
+  - **[FFmpeg](https://ffmpeg.org/download.html):** Medya işleme (kesme, GIF yapma, ekran kaydı) için.
+  - **[Speedtest CLI](https://www.speedtest.net/apps/cli):** `/hiz_testi` komutu için.
 
-Proaktif Ağ İzleme: /izle ile kesinti bildirimleri
+### Kurulum Adımları
 
-⚙️ Teknik Mimarî
-Modüler Tasarım:
+1.  **Projeyi Klonlayın:**
+    ```bash
+    git clone https://github.com/ArdaYILDIZ-DEV/go-telegram-asistan.git
+    cd go-telegram-asistan
+    ```
+2.  **Go Modüllerini İndirin:**
+    ```bash
+    go mod tidy
+    ```
+3.  **Yapılandırma Dosyasını (`.env`) Oluşturun:**
+    Proje ana dizininde `.env` adında bir dosya oluşturun ve aşağıdaki tabloya göre doldurun.
 
-📦 go-telegram-asistan
-├── 📂 core
-│   ├── 📜 bot.go           # Ana bot yapılandırması
-│   ├── 📜 commands.go      # Komut işleyiciler
-│   └── 📜 scheduler.go     # Zamanlanmış görevler
-├── 📂 modules
-│   ├── 📜 file_manager.go  # Dosya yönetim sistemi
-│   ├── 📜 media_processor.go # Medya işleme
-│   └── 📜 system_monitor.go # Sistem izleme
-├── 📜 metadata.json        # Dosya açıklamaları DB
-└── 📜 .env                 # Yapılandırma ayarları
+    | Değişken | Gerekli? | Açıklama | Örnek |
+    | :--- | :---: | :--- | :--- |
+    | `BOT_TOKEN` | ✅ **Evet** | Telegram'da `@BotFather`'dan alacağınız API token'ı. | `123456:ABC-DEF...` |
+    | `ADMIN_CHAT_ID` | ✅ **Evet** | Botun tam yetkili yöneticisinin Telegram ID'si. | `9876543210` |
+    | `ALLOWED_IDS` | ❌ Hayır | Botu kullanabilecek diğer kullanıcıların ID'leri (virgülle ayırın). | `112233,445566` |
+    | `BASE_DIR`| ❌ Hayır | Botun çalışacağı ana klasör. *Varsayılan: `Gelenler`*. | `C:/BotDosyalari` |
+    | `MONITORED_PORTS` | ❌ Hayır | Periyodik olarak izlenecek portlar (virgülle ayırın). | `80,443,3306` |
 
+4.  **Botu Çalıştırın:**
+    ```bash
+    go run .
+    ```
+    Veya daha performanslı bir şekilde derleyip çalıştırmak için:
+    ```bash
+    # Windows için
+    go build -o asistan.exe && ./asistan.exe
 
-Performans Optimizasyonu:
+    # Linux/macOS için
+    go build -o asistan && ./asistan
+    ```
 
-Goroutine'ler ile eşzamanlı işlem yönetimi
+---
 
-Mutex kilitleri ile thread güvenliği
+<details>
+  <summary><strong>Tüm Komutların Listesi ve Açıklamaları</strong></summary>
+  
+  | Komut | Açıklama |
+  | :--- | :--- |
+  | `/start` | Bota hoş geldin mesajı ve genel bir bakış sunar. |
+  | `/help` | Bu komut listesini gösterir. |
+  | `/getir <dosya>` | Sunucudan belirtilen dosyayı gönderir. |
+  | `/sil <dosya>` | Belirtilen dosyayı onay alarak siler. |
+  | `/yenidenadlandir <eski> <yeni>` | Bir dosyanın adını değiştirir. |
+  | `/tasi <dosya> <klasör>` | Bir dosyayı başka bir klasöre taşır. |
+  | `/ara <kelime>` | Dosya adlarında arama yapar. |
+  | `/liste` | Ana klasördeki dosyaları gösterir. |
+  | `/klasor <kategori>` | Belirli bir kategori klasörünü listeler. |
+  | `/aciklama_ekle <dosya> <açıklama>` | Bir dosyaya açıklama ekler. |
+  | `/aciklama_sil <dosya>` | Bir dosyanın açıklamasını siler. |
+  | `/aciklamalar` | Tüm açıklamaları listeler. |
+  | `/aciklama_ara <kelime>` | Açıklamaların içinde arama yapar. |
+  | `/indir <URL> [kalite] [format]` | Video/dosya indirir. |
+  | `/indir_ses <URL> [format]` | Sadece ses dosyasını indirir. |
+  | `/kes <dosya> <baş> <bitiş>` | Bir videonun belirtilen aralığını keser. |
+  | `/gif_yap <dosya> <baş> <bitiş>` | Bir videodan GIF üretir. |
+  | `/gorevler` | İnteraktif görev yöneticisini açar (Yönetici). |
+  | `/calistir <yol> <süre>` | Sunucuda bir betik çalıştırır (Yönetici). |
+  | `/kapat <PID>` | Belirtilen PID'ye sahip işlemi durdurur (Yönetici). |
+  | `/duzenle` | Dosyaları otomatik olarak kategorilere ayırır. |
+  | `/durum` | Temel sistem durumunu gösterir. |
+  | `/sistem_bilgisi` | Ayrıntılı sistem bilgilerini raporlar (Yönetici). |
+  | `/hiz_testi` | İnternet indirme/yükleme hızı ve ping ölçümü yapar. |
+  | `/portlar` | İzlenen portların durumunu kontrol eder. |
+  | `/ss` | Sunucunun ekran görüntüsünü alır (Yönetici). |
+  | `/kayit_al`, `/kayit_durdur` | Ekran kaydını başlatır ve durdurur (Yönetici). |
+  | `/izle` | İnternet kesinti izleyicisini açar/kapatır. |
 
-FFmpeg'in donanım hızlandırmasından yararlanma
+</details>
 
-🚀 Hızlı Kurulum
-Ön Koşullar:
+---
 
-# Gerekli araçlar
-choco install ffmpeg yt-dlp speedtest-cli -y  # Windows
-brew install ffmpeg yt-dlp speedtest-cli      # macOS
+## 🛠️ Kullanılan Teknolojiler
 
-Kurulum Adımları
-1.Repoyu klonla:
+<p align="left">
+  <!-- skillicons.dev ile gelenler (yönlendirmesiz) -->
+  <img src="https://skillicons.dev/icons?i=go,git,github,powershell,vscode" />
+  
+  <!-- Manuel olarak eklenen ve yönlendirmesi kaldırılan logolar -->
+  <img src="https://repository-images.githubusercontent.com/947861912/79d2548e-a5dc-420e-8fda-3e9368a7b668" alt="FFmpeg" height="48">
+  <img src="https://repository-images.githubusercontent.com/307260205/b6a8d716-9c7b-40ec-bc44-6422d8b741a0" alt="yt-dlp" height="48">
+</p>
 
-git clone https://github.com/ArdaYILDIZ-DEV/go-telegram-asistan.git
-cd go-telegram-asistan
+---
 
+## 🤝 Katkıda Bulunma
 
-2.Yapılandırma dosyası oluştur (.env):
+Bu proje kişisel kullanım için geliştirilmiştir, ancak her türlü fikir, öneri ve katkıya açıktır. Bir hata bulursanız veya yeni bir özellik önermek isterseniz, lütfen bir **[Issue](https://github.com/ArdaYILDIZ-DEV/go-telegram-asistan/issues)** açmaktan veya **[Pull Request](https://github.com/ArdaYILDIZ-DEV/go-telegram-asistan/pulls)** göndermekten çekinmeyin.
 
-BOT_TOKEN=123456:ABC-DEF12345ghijklmnopqrstuvwxyz
-ADMIN_CHAT_ID=987654321
-BASE_DIR=C:/SunucuDosyalari
-MONITORED_PORTS=80,443,22
+1.  Projeyi **Fork**'layın.
+2.  Yeni bir özellik dalı oluşturun (`git checkout -b feature/YeniHarikaOzellik`).
+3.  Değişikliklerinizi yapın ve **Commit**'leyin (`git commit -m 'Yeni bir harika özellik eklendi'`).
+4.  Dalınızı **Push**'layın (`git push origin feature/YeniHarikaOzellik`).
+5.  Bir **Pull Request** oluşturun.
 
-3.Bağımlılıkları yükle ve çalıştır:
+---
 
-go mod tidy
-go build -o asistan && ./asistan
+## Lisans
 
-
-📊 Komut Referansı
-Kategori	Komut	Açıklama
-Dosya	/getir <dosya>	Dosyayı indir
-/aciklama_ekle ...	Dosyaya açıklama ekle
-Sistem	/gorevler	İşlemleri listele
-/sistem_bilgisi	Detaylı sistem raporu
-Medya	/indir <URL>	Video/audio indir
-/gif_yap ...	Videodan GIF oluştur
-Otomasyon	/izle	Ağ bağlantısını izle
-/duzenle	Dosyaları otomatik kategorize et
-
-
-🤝 Katkıda Bulunma
-Katkılarınızı bekliyoruz! İşte katkı süreci:
-
-graph TB
-    A[Fork Repo] --> B[Özellik Dalı Oluştur]
-    B --> C[Değişiklikleri Yap]
-    C --> D[Testleri Çalıştır]
-    D --> E[Pull Request Gönder]
-    E --> F[Code Review]
-    F --> G[Merge]
-
-1.Repoyu fork'layın
-
-2.Yeni bir özellik dalı oluşturun (feature/yeni-ozellik)
-
-3.Değişikliklerinizi commit'leyin
-
-4.Testleri çalıştırın: go test ./...
-
-5.Pull Request oluşturun
-
-📜 Lisans
-Bu proje MIT Lisansı ile lisanslanmıştır.
-
-Copyright (c) 2023 Arda YILDIZ
-
-İzin verilen ücretsiz kullanım, kopyalama, değiştirme, birleştirme, yayımlama, dağıtma...
+Bu proje [MIT Lisansı](https://github.com/ArdaYILDIZ-DEV/go-telegram-asistan/blob/main/LICENSE) ile lisanslanmıştır.
