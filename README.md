@@ -13,14 +13,6 @@
 
 ---
 
-<p align="center">
-  <!-- 
-    ÖNEMLİ TAVSİYE: Buraya botun en havalı özelliğini (örneğin /gorevler komutunun interaktif menüsü)
-    gösteren bir GIF veya kısa bir video koymanız, projenizin popülerliğini inanılmaz artıracaktır.
-    LICEcap veya ScreenToGif gibi araçlarla kolayca GIF oluşturabilirsiniz.
-  -->
-  <img src="https://user-images.githubusercontent.com/ örnek-gif-urlsi" alt="Botun Çalışma Anı GIF'i" width="85%">
-</p>
 
 ---
 
