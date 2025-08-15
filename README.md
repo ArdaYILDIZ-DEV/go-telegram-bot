@@ -119,7 +119,7 @@ Proje kök dizininde .env dosyası oluşturun ve kendi bilgilerinizi girin:
    ADMIN_CHAT_ID=9876543210           # Yönetici Telegram kullanıcı ID'niz
    ALLOWED_IDS=112233,445566          # (Opsiyonel) Yetkili diğer kullanıcı ID'leri, virgülle ayırın
    BASE_DIR=C:/BotDosyalari           # (Opsiyonel) Botun çalışacağı ana dizin
-MONITORED_PORTS=80,443,3306        # (Opsiyonel) İzlenecek portlar
+   MONITORED_PORTS=80,443,3306        # (Opsiyonel) İzlenecek portlar
    ```
 
 4. **Botu Çalıştırın:**
