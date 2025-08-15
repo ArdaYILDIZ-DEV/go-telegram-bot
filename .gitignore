@@ -1,0 +1,14 @@
+# Environment files
+.env
+.env.*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+# Test binary, build output
+*.test
+*.out
+#application
+*.exe
+*.log
+*.log.*
