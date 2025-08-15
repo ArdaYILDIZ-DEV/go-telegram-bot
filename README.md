@@ -8,7 +8,6 @@
   <img src="https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go">
   <img src="https://img.shields.io/badge/FFmpeg-00780B?style=for-the-badge&logo=ffmpeg&logoColor=white" alt="FFmpeg">
   <img src="https://img.shields.io/badge/yt--dlp-838383?style=for-the-badge&logo=youtube&logoColor=white" alt="yt-dlp">
-  <a href="https://github.com/ArdaYILDIZ-DEV/go-telegram-asistan/blob/main/LICENSE"><img src="https://img.shields.io/github/license/ArdaYILDIZ-DEV/go-telegram-asistan?style=for-the-badge&color=informational" alt="Lisans"></a>
 </p>
 
 ---
