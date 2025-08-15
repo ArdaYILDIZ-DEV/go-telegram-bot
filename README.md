@@ -8,13 +8,43 @@
   <img src="https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go">
   <img src="https://img.shields.io/badge/FFmpeg-00780B?style=for-the-badge&logo=ffmpeg&logoColor=white" alt="FFmpeg">
   <img src="https://img.shields.io/badge/yt--dlp-838383?style=for-the-badge&logo=youtube&logoColor=white" alt="yt-dlp">
+  <a href="https://github.com/ArdaYILDIZ-DEV/go-telegram-asistan/blob/main/LICENSE"><img src="https://img.shields.io/github/license/ArdaYILDIZ-DEV/go-telegram-asistan?style=for-the-badge&color=informational" alt="Lisans"></a>
 </p>
 
 ---
 
+<p align="center">
+  <!-- 
+    ÖNEMLİ TAVSİYE: Buraya botun en havalı özelliğini (örneğin /gorevler komutunun interaktif menüsü)
+    gösteren bir GIF veya kısa bir video koymanız, projenizin popülerliğini inanılmaz artıracaktır.
+    LICEcap veya ScreenToGif gibi araçlarla kolayca GIF oluşturabilirsiniz.
+  -->
+  <img src="https://user-images.githubusercontent.com/ örnek-gif-urlsi" alt="Botun Çalışma Anı GIF'i" width="85%">
+</p>
+
+---
+
+### İçindekiler
+- [Proje Hakkında](#proje-hakkında)
+- [Öne Çıkan Özellikler](#-öne-çıkan-özellikler)
+- [Mimarî ve Tasarım Felsefesi](#mimarî-ve-tasarım-felsefesi)
+- [Hızlı Başlangıç](#-hızlı-başlangıç)
+  - [Ön Gereksinimler](#ön-gereksinimler)
+  - [Kurulum Adımları](#kurulum-adımları)
+- [Tüm Komutların Listesi](#tüm-komutların-listesi-ve-açıklamaları)
+- [Kullanılan Teknolojiler](#️-kullanılan-teknolojiler)
+- [Katkıda Bulunma](#-katkıda-bulunma)
+- [Lisans](#lisans)
+
+---
+
+### Proje Hakkında
+
 **Go Telegram Asistan Botu**, sadece komut çalıştıran basit bir botun çok ötesindedir. Arka planda çalışan zamanlayıcılar, dosya sistemi olaylarını anlık olarak dinleyen izleyiciler ve Go'nun eşzamanlılık (concurrency) gücü sayesinde, sunucunuzla proaktif bir şekilde etkileşim kuran kişisel bir asistandır. Dosyalarınızı organize eder, ağ sorunlarını size bildirir ve uzun süren görevleri sizi engellemeden arka planda halleder.
 
 > Bu proje, bir sunucu üzerindeki kontrolü, güvenliği ve otomasyonu doğrudan Telegram arayüzüne taşıyarak uzaktan yönetimi kolaylaştırmak amacıyla geliştirilmiştir.
+
+<p align="right">(<a href="#go-telegram-asistan-botu">başa dön</a>)</p>
 
 ---
 
@@ -77,20 +107,24 @@
   - `/izle`: İnternet bağlantısını `ping` ile sürekli izler. Bağlantı kesildiğinde ve geri geldiğinde **sadece durum değiştiğinde** bildirim gönderir, gereksiz mesajları önler.
   - **Port Monitörü:** `/portlar` komutunun izlediği portların durumu değiştiğinde (örn: bir servis çöktüğünde veya başladığında) anında bildirim alırsınız.
 
+<p align="right">(<a href="#go-telegram-asistan-botu">başa dön</a>)</p>
+
 ---
 
 ### Mimarî ve Tasarım Felsefesi
 > Bu bot, "sorumlulukların ayrılması" ve "engellemesiz operasyon" prensipleri üzerine kurulmuştur.
 -   **Modülerlik:** Her dosya (`auth.go`, `file_manager.go`, `scheduler.go` vb.) tek bir sorumluluk alanına odaklanır.
 -   **Eşzamanlılık (Concurrency):** `goroutine` ve `channel`'lar, indirme, betik çalıştırma gibi uzun süren işlemlerin botun ana akışını engellemesini önler. Bot, aynı anda birden çok komuta yanıt verebilir.
--   **Durum Güvenliği (State Safety):** Paylaşılan verilere (metadata, kayıt durumu vb.) erişim, `sync.Mutex` kilitleri ile korunarak "race condition" hatalarının önüne geçilir.
+-   **Durum Güvenliği (State Safety):** Payılan verilere (metadata, kayıt durumu vb.) erişim, `sync.Mutex` kilitleri ile korunarak "race condition" hatalarının önüne geçilir.
 -   **Harici Araç Entegrasyonu:** `yt-dlp`, `ffmpeg` gibi kendini kanıtlamış, güçlü komut satırı araçlarını bir arayüz arkasında birleştirir.
+
+<p align="right">(<a href="#go-telegram-asistan-botu">başa dön</a>)</p>
 
 ---
 
 ## 🚀 Hızlı Başlangıç
 
-### Gereksinimler
+### Ön Gereksinimler
 
 - **Go:** `1.18` veya üstü.
 - **Harici Araçlar:** Botun tüm özelliklerini kullanabilmek için aşağıdaki CLI araçlarının sisteminizde kurulu ve **PATH** ortam değişkenine eklenmiş olması gerekir:
@@ -109,8 +143,8 @@
     ```bash
     go mod tidy
     ```
-3.  **Yapılandırma Dosyasını (`.env`) Oluşturun:**
-    Proje ana dizininde `.env` adında bir dosya oluşturun ve aşağıdaki tabloya göre doldurun.
+3.  **Yapılandırma Dosyasını Oluşturun:**
+    Proje ana dizininde `.env` adında bir dosya oluşturun. **En iyi pratik olarak, projenin kök dizinine bir `.env.example` dosyası ekleyerek yeni kullanıcıların hangi değişkenlere ihtiyaç duyduğunu görmesini sağlayabilirsiniz.**
 
     | Değişken | Gerekli? | Açıklama | Örnek |
     | :--- | :---: | :--- | :--- |
@@ -133,10 +167,13 @@
     go build -o asistan && ./asistan
     ```
 
+<p align="right">(<a href="#go-telegram-asistan-botu">başa dön</a>)</p>
+
 ---
 
+### Tüm Komutların Listesi ve Açıklamaları
 <details>
-  <summary><strong>Tüm Komutların Listesi ve Açıklamaları</strong></summary>
+  <summary><strong>Genişletmek için tıklayın...</strong></summary>
   
   | Komut | Açıklama |
   | :--- | :--- |
@@ -163,26 +200,23 @@
   | `/duzenle` | Dosyaları otomatik olarak kategorilere ayırır. |
   | `/durum` | Temel sistem durumunu gösterir. |
   | `/sistem_bilgisi` | Ayrıntılı sistem bilgilerini raporlar (Yönetici). |
-  | `/hiz_testi` | İnternet indirme/yükleme hızı ve ping ölçümü yapar. |
-  | `/portlar` | İzlenen portların durumunu kontrol eder. |
-  | `/ss` | Sunucunun ekran görüntüsünü alır (Yönetici). |
-  | `/kayit_al`, `/kayit_durdur` | Ekran kaydını başlatır ve durdurur (Yönetici). |
-  | `/izle` | İnternet kesinti izleyicisini açar/kapatır. |
+  - **Gizlilik:** `.gitignore` dosyası ile `.env` ve `*.log` gibi hassas dosyaların repoya gönderilmesini engelleyin.
 
 </details>
+
+<p align="right">(<a href="#go-telegram-asistan-botu">başa dön</a>)</p>
 
 ---
 
 ## 🛠️ Kullanılan Teknolojiler
 
 <p align="left">
-  <!-- skillicons.dev ile gelenler (yönlendirmesiz) -->
   <img src="https://skillicons.dev/icons?i=go,git,github,powershell,vscode" />
-  
-  <!-- Manuel olarak eklenen ve yönlendirmesi kaldırılan logolar -->
   <img src="https://repository-images.githubusercontent.com/947861912/79d2548e-a5dc-420e-8fda-3e9368a7b668" alt="FFmpeg" height="48">
   <img src="https://repository-images.githubusercontent.com/307260205/b6a8d716-9c7b-40ec-bc44-6422d8b741a0" alt="yt-dlp" height="48">
 </p>
+
+<p align="right">(<a href="#go-telegram-asistan-botu">başa dön</a>)</p>
 
 ---
 
@@ -196,8 +230,11 @@ Bu proje kişisel kullanım için geliştirilmiştir, ancak her türlü fikir, �
 4.  Dalınızı **Push**'layın (`git push origin feature/YeniHarikaOzellik`).
 5.  Bir **Pull Request** oluşturun.
 
+
 ---
 
 ## Lisans
 
 Bu proje [MIT Lisansı](https://github.com/ArdaYILDIZ-DEV/go-telegram-asistan/blob/main/LICENSE) ile lisanslanmıştır.
+
+<p align="right">(<a href="#go-telegram-asistan-botu">başa dön</a>)</p>
