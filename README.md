@@ -8,6 +8,7 @@
   <img src="https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go">
   <img src="https://img.shields.io/badge/FFmpeg-00780B?style=for-the-badge&logo=ffmpeg&logoColor=white" alt="FFmpeg">
   <img src="https://img.shields.io/badge/yt--dlp-838383?style=for-the-badge&logo=youtube&logoColor=white" alt="yt-dlp">
+  <a href="https://github.com/ArdaYILDIZ-DEV/go-telegram-asistan/blob/main/LICENSE"><img src="https://img.shields.io/github/license/ArdaYILDIZ-DEV/go-telegram-asistan?style=for-the-badge&color=informational" alt="Lisans"></a>
 </p>
 
 ---
@@ -20,7 +21,11 @@
 
 ## ✨ Öne Çıkan Özellikler
 
-### 📁 Gelişmiş Dosya Yönetimi
+<br/>
+<p align="center">
+  <img src="https://img.shields.io/badge/-Gelişmiş%20Dosya%20Yönetimi-007ACC?style=for-the-badge" alt="Dosya Yönetimi">
+</p>
+
 - **Listeleme ve Arama:**
   - `/liste`: Ana dizindeki dosyaları listeler.
   - `/klasor <kategori>`: Belirli bir kategori altındaki dosyaları gösterir.
@@ -33,7 +38,11 @@
   - `/aciklama_ekle <dosya> <açıklama>`: Dosyalara kalıcı olarak `metadata.json` dosyasında saklanan açıklamalar ekler.
   - `/aciklama_ara <kelime>`: Sadece dosya adlarında değil, **dosya açıklamalarının içinde de** arama yapar.
 
-### 🖥️ Kapsamlı Sistem Kontrolü
+<br/>
+<p align="center">
+  <img src="https://img.shields.io/badge/-Kapsamlı%20Sistem%20Kontrolü-007ACC?style=for-the-badge" alt="Sistem Kontrolü">
+</p>
+
 - **İnteraktif Görev Yöneticisi:**
   - `/gorevler`: Sunucuda çalışan tüm işlemleri **sayfalı ve sıralanabilir** bir arayüzde sunar. CPU veya RAM kullanımına göre artan/azalan şekilde sıralama yapabilirsiniz.
   - `/kapat <PID>`: Görev yöneticisinden veya manuel olarak belirlediğiniz bir işlemi anında sonlandırır.
@@ -43,7 +52,11 @@
   - `/ss`: Windows üzerinde PowerShell kullanarak anlık, yüksek çözünürlüklü bir ekran görüntüsü alır.
   - `/kayit_al` & `/kayit_durdur`: `FFmpeg` kullanarak ekran kaydı yapar. Kayıt durdurulduğunda, video dosyası işlenir ve otomatik olarak size gönderilir.
 
-### 🌐 Medya İndirme ve İşleme
+<br/>
+<p align="center">
+  <img src="https://img.shields.io/badge/-Medya%20İndirme%20ve%20İşleme-007ACC?style=for-the-badge" alt="Medya İşlemleri">
+</p>
+
 - **Akıllı İndirme Motoru:**
   - `/indir <URL> [kalite] [format]`: `yt-dlp`'nin esnek format seçimi (`-f`) yeteneğini kullanarak, "en iyi video (<=1080p, mp4) + en iyi ses" gibi karmaşık kurallarla indirme yapar. İlerleme durumu anlık olarak mesaj düzenlenerek size bildirilir.
   - `/indir_ses <URL> [format]`: Videoyu tamamen atlayarak sadece en iyi ses akışını indirir ve `opus`, `mp3`, `flac` gibi formatlara dönüştürür.
@@ -52,7 +65,11 @@
 - **Optimize Edilmiş GIF Üretimi:**
   - `/gif_yap <dosya> <baş> <bitiş>`: Standart GIF oluşturmanın ötesinde, videodan önce bir renk paleti çıkarıp sonra bu paleti kullanarak GIF'i oluşturan iki aşamalı bir `filtergraph` kullanır. Bu, çok daha yüksek renk doğruluğu ve daha küçük dosya boyutu sağlar.
 
-### ⚙️ Akıllı Otomasyonlar
+<br/>
+<p align="center">
+  <img src="https://img.shields.io/badge/-Akıllı%20Otomasyonlar-007ACC?style=for-the-badge" alt="Otomasyonlar">
+</p>
+
 - **Magic Folder (`TelegramaGonder`):** Bu klasöre sürükleyip bıraktığınız herhangi bir dosya, `fsnotify` dosya sistemi izleyicisi tarafından anında algılanır, size gönderilir ve ardından sunucudan temizlenir.
 - **Otomatik Raporlama ve Bakım:**
   - **Saatlik Sistem Raporu:** Her saat başı, `/sistem_bilgisi` ve `/hiz_testi` komutlarının birleşiminden oluşan detaylı bir raporu otomatik olarak size gönderir.
@@ -65,10 +82,10 @@
 
 ### Mimarî ve Tasarım Felsefesi
 > Bu bot, "sorumlulukların ayrılması" ve "engellemesiz operasyon" prensipleri üzerine kurulmuştur.
--   ✅ **Modülerlik:** Her dosya (`auth.go`, `file_manager.go`, `scheduler.go` vb.) tek bir sorumluluk alanına odaklanır.
--   ✅ **Eşzamanlılık (Concurrency):** `goroutine` ve `channel`'lar, indirme, betik çalıştırma gibi uzun süren işlemlerin botun ana akışını engellemesini önler. Bot, aynı anda birden çok komuta yanıt verebilir.
--   ✅ **Durum Güvenliği (State Safety):** Paylaşılan verilere (metadata, kayıt durumu vb.) erişim, `sync.Mutex` kilitleri ile korunarak "race condition" hatalarının önüne geçilir.
--   ✅ **Harici Araç Entegrasyonu:** `yt-dlp`, `ffmpeg` gibi kendini kanıtlamış, güçlü komut satırı araçlarını bir arayüz arkasında birleştirir.
+-   **Modülerlik:** Her dosya (`auth.go`, `file_manager.go`, `scheduler.go` vb.) tek bir sorumluluk alanına odaklanır.
+-   **Eşzamanlılık (Concurrency):** `goroutine` ve `channel`'lar, indirme, betik çalıştırma gibi uzun süren işlemlerin botun ana akışını engellemesini önler. Bot, aynı anda birden çok komuta yanıt verebilir.
+-   **Durum Güvenliği (State Safety):** Paylaşılan verilere (metadata, kayıt durumu vb.) erişim, `sync.Mutex` kilitleri ile korunarak "race condition" hatalarının önüne geçilir.
+-   **Harici Araç Entegrasyonu:** `yt-dlp`, `ffmpeg` gibi kendini kanıtlamış, güçlü komut satırı araçlarını bir arayüz arkasında birleştirir.
 
 ---
 
@@ -120,7 +137,7 @@
 ---
 
 <details>
-  <summary><strong>📚 Tüm Komutların Listesi İçin Tıklayın</strong></summary>
+  <summary><strong>Tüm Komutların Listesi ve Açıklamaları</strong></summary>
   
   | Komut | Açıklama |
   | :--- | :--- |
@@ -161,11 +178,9 @@
 
 <p align="left">
   <!-- skillicons.dev ile gelenler (yönlendirmesiz) -->
-  <!-- Not: skillicons servisi varsayılan olarak link eklemez, bu yüzden sadece img etiketi yeterlidir -->
   <img src="https://skillicons.dev/icons?i=go,git,github,powershell,vscode" />
   
   <!-- Manuel olarak eklenen ve yönlendirmesi kaldırılan logolar -->
-  <!-- Sadece <img> etiketini bırakarak tıklanabilirliği kaldırıyoruz -->
   <img src="https://repository-images.githubusercontent.com/947861912/79d2548e-a5dc-420e-8fda-3e9368a7b668" alt="FFmpeg" height="48">
   <img src="https://repository-images.githubusercontent.com/307260205/b6a8d716-9c7b-40ec-bc44-6422d8b741a0" alt="yt-dlp" height="48">
 </p>
@@ -186,4 +201,4 @@ Bu proje kişisel kullanım için geliştirilmiştir, ancak her türlü fikir, �
 
 ## Lisans
 
-Bu proje MIT Lisansı ile lisanslanmıştır.
+Bu proje [MIT Lisansı](https://github.com/ArdaYILDIZ-DEV/go-telegram-asistan/blob/main/LICENSE) ile lisanslanmıştır.

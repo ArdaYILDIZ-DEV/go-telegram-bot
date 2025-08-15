@@ -818,3 +818,11 @@ photo_20250729_2315818.jpg
 2025/08/10 12:32:39 metadata_manager.go:45: Metadata başarıyla yüklendi.
 2025/08/10 12:32:39 main.go:37: NyvianBot botu olarak yetkilendirildi.
 2025/08/10 12:32:39 main.go:45: Bot güncellemeleri dinlemeye başladı...
+2025/08/15 21:41:10 main.go:36: Uygulama başlatılıyor...
+2025/08/15 21:41:10 config.go:55: Yönetici ID'si başarıyla yüklendi: 6509114988
+2025/08/15 21:41:10 config.go:66: 1 adet izinli kullanıcı yüklendi.
+2025/08/15 21:41:10 config.go:80: Ana çalışma klasörü ayarlandı: C:/Users/Arda/Desktop/Gelenler
+2025/08/15 21:41:10 config.go:98: Yapılandırma başarıyla yüklendi.
+2025/08/15 21:41:10 metadata_manager.go:63: Metadata başarıyla yüklendi.
+2025/08/15 21:41:11 main.go:57: NyvianBot botu olarak yetkilendirildi.
+2025/08/15 21:41:11 main.go:68: Bot güncellemeleri dinlemeye başladı...
