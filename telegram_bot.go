@@ -9,30 +9,26 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-// #############################################################################
-// #                           ANA BOT MANTIĞI VE YÖNLENDİRİCİ
-// #############################################################################
-// Bu dosya, botun beyni olarak işlev görür. Telegram'dan gelen tüm
-// güncellemeleri (mesajlar, komutlar, buton tıklamaları) dinleyen ana döngüyü
-// içerir. Gelen her isteği ilk olarak bir yetkilendirme filtresinden geçirir
-// ve ardından isteğin türüne göre ilgili "handle" fonksiyonuna yönlendirir.
+// Burası botun beyni. Telegram'dan gelen tüm güncellemeler (mesajlar, komutlar,
+// buton tıklamaları) burada karşılanır, yetki kontrolünden geçer ve ilgili
+// fonksiyona yönlendirilir.
 
-// handleUpdates, Telegram'dan gelen güncellemeleri sonsuz bir döngüde dinler.
-// Programın ana işlevini bu fonksiyon yürütür.
+// Ana güncelleme döngüsü. Gelen her şey (mesaj, callback) bu `for` döngüsü
+// tarafından yakalanır ve işlenir. Programın kalbi burasıdır.
 func handleUpdates(bot *tgbotapi.BotAPI, updates tgbotapi.UpdatesChannel) {
 	for update := range updates {
 		var userID int64
 		var chatID int64
 		var fromUserName string
 
-		// * Güncellemenin türüne (mesaj mı, buton tıklaması mı) göre
-		// * ilgili kullanıcı bilgilerini tek bir yerden al.
+		// Gelen güncellemenin türüne göre temel bilgileri (kim, nereye) alalım.
 		if update.Message != nil {
 			userID = update.Message.From.ID
 			chatID = update.Message.Chat.ID
@@ -44,39 +40,37 @@ func handleUpdates(bot *tgbotapi.BotAPI, updates tgbotapi.UpdatesChannel) {
 			fromUserName = update.CallbackQuery.From.UserName
 			log.Printf("[%s] Callback: %s", fromUserName, update.CallbackQuery.Data)
 		} else {
-			continue // Desteklenmeyen güncelleme türlerini (örn: kanal postası) atla.
+			// Desteklemediğimiz bir güncelleme türü ise atla.
+			continue
 		}
 
-		// * ÖNEMLİ: BOTUN ANA GÜVENLİK KİLİDİ
-		// * Herhangi bir işlem yapmadan önce, isteği yapan kullanıcının
-		// * botu kullanma izni (`isUserAllowed`) olup olmadığını kontrol et.
-		// * Yetkisiz kullanıcılar burada engellenir ve döngünün başına dönülür.
+		// Her şeyden önce: Bu kullanıcı botu kullanabilir mi?
 		if !isUserAllowed(userID) {
 			log.Printf("⚠️ YETKİSİZ ERİŞİM DENEMESİ! Kullanıcı: %s (%d)", fromUserName, userID)
 			bot.Send(tgbotapi.NewMessage(chatID, "🚫 Bu botu kullanma yetkiniz bulunmuyor."))
 			continue
 		}
 
-		// * Yetkilendirme başarılı, şimdi gelen isteği işle.
+		// Gelen güncellemenin içeriğini doğru fonksiyona yönlendir.
 		if update.Message != nil {
 			if update.Message.IsCommand() {
-				handleCommand(bot, update.Message) // Komut ise komut işleyiciye
+				handleCommand(bot, update.Message)
 			} else {
-				handleFile(bot, update.Message) // Komut değilse (dosya, resim vb.), dosya işleyiciye
+				// Komut değilse, muhtemelen bir dosyadır.
+				handleFile(bot, update.Message)
 			}
 		} else if update.CallbackQuery != nil {
-			handleCallbackQuery(bot, update.CallbackQuery) // Buton tıklaması ise callback işleyiciye
+			handleCallbackQuery(bot, update.CallbackQuery)
 		}
 	}
 }
 
-// handleCommand, gelen komutları alır, yönetici yetkisi gerekip gerekmediğini
-// kontrol eder ve ardından `switch` bloğu ile ilgili alt fonksiyona yönlendirir.
+// Komut yönlendirici. Gelen komutun yönetici yetkisi gerektirip gerektirmediğini
+// kontrol eder ve `switch` bloğu ile doğru fonksiyona paslar.
 func handleCommand(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
 	command := message.Command()
 
-	// * Yönetici yetkisi gerektiren "tehlikeli" komutların listesi.
-	// * Yeni bir yönetici komutu eklendiğinde bu haritaya (map) eklenmesi yeterlidir.
+	// Bu komutlar sadece botun sahibi tarafından kullanılabilir.
 	adminOnlyCommands := map[string]bool{
 		"calistir":       true,
 		"kapat":          true,
@@ -84,23 +78,24 @@ func handleCommand(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
 		"kayit_al":       true,
 		"kayit_durdur":   true,
 		"ss":             true,
+		"gorevler":       true,
 	}
 
-	// * İkinci güvenlik katmanı: Komut, yönetici listesindeyse,
-	// * gönderenin gerçekten yönetici (`isUserAdmin`) olup olmadığını kontrol et.
+	// Komut korumalı mı diye kontrol et.
 	if _, isProtected := adminOnlyCommands[command]; isProtected {
 		if !isUserAdmin(message.From.ID) {
 			log.Printf("⚠️ YETKİSİZ KOMUT DENEMESİ! Kullanıcı: %s (%d), Komut: /%s", message.From.UserName, message.From.ID, command)
 			bot.Send(tgbotapi.NewMessage(message.Chat.ID, "🚫 Bu komutu sadece yönetici kullanabilir."))
-			return // Fonksiyonu burada sonlandırarak komutun işlenmesini engelle.
+			return
 		}
 	}
 
-	// * Tüm yetki kontrollerinden geçen komut, `switch` bloğu ile ilgili
-	// * `handle...` fonksiyonuna gönderilir. Burası ana yönlendiricidir (router).
+	// Komutları ilgili işleyicilere dağıt.
 	switch command {
 	case "start", "help", "duzenle", "sistem_bilgisi", "durum", "hiz_testi":
 		handleGeneralCommands(bot, message)
+	case "gorevler":
+		handleListProcessesCommand(bot, message)
 	case "calistir":
 		handleRunCommand(bot, message)
 	case "kapat":
@@ -151,19 +146,19 @@ func handleCommand(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
 	}
 }
 
-// handleFile, kullanıcı tarafından komut olmadan gönderilen içerikleri (dosya, resim,
-// sesli not vb.) işler. Bu içerikleri sunucuya indirir ve kaydeder.
+// Komut olmayan mesajları (dosya, fotoğraf, ses kaydı vb.) işler.
+// Gelen dosyayı sunucuya indirir ve kullanıcıya bilgi verir.
 func handleFile(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
 	var fileID, fileName, mimeType string
 	var fileSize int64
 
-	// * Gelen mesajın türüne göre (döküman, fotoğraf, video vb.)
-	// * dosya bilgilerini ilgili alanlardan çıkarır.
+	// Gelen mesajın içeriği ne? Fotoğraf mı, belge mi, video mu?
 	switch {
 	case message.Document != nil:
 		fileID, fileName, fileSize, mimeType = message.Document.FileID, message.Document.FileName, int64(message.Document.FileSize), message.Document.MimeType
 	case message.Photo != nil:
-		photo := message.Photo[len(message.Photo) - 1] // En yüksek çözünürlüklü fotoğrafı seç.
+		// En yüksek çözünürlüklü fotoğrafı al.
+		photo := message.Photo[len(message.Photo)-1]
 		fileID, fileName, fileSize, mimeType = photo.FileID, fmt.Sprintf("photo_%d.jpg", time.Now().Unix()), int64(photo.FileSize), "image/jpeg"
 	case message.Video != nil:
 		fileID, fileName, fileSize, mimeType = message.Video.FileID, message.Video.FileName, int64(message.Video.FileSize), message.Video.MimeType
@@ -172,14 +167,15 @@ func handleFile(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
 	case message.Voice != nil:
 		fileID, fileName, fileSize, mimeType = message.Voice.FileID, fmt.Sprintf("voice_%d.ogg", time.Now().Unix()), int64(message.Voice.FileSize), message.Voice.MimeType
 	case message.VideoNote != nil:
+		// Yuvarlak video mesajları.
 		videoNote := message.VideoNote
 		fileID, fileName, fileSize, mimeType = videoNote.FileID, fmt.Sprintf("video_note_%d.mp4", time.Now().Unix()), int64(videoNote.FileSize), "video/mp4"
 	default:
+		// Sadece metin mesajıysa veya desteklenmeyen bir türse, bir şey yapma.
 		return
 	}
 
-	// * Bazen Telegram dosya adı göndermez. Bu durumda, MIME türünden
-	// * yola çıkarak bir dosya uzantısı bulmaya çalışırız.
+	// Bazen dosya adı gelmeyebilir, mime türünden bir uzantı uyduralım.
 	if fileName == "" {
 		exts, _ := mime.ExtensionsByType(mimeType)
 		if len(exts) > 0 {
@@ -189,13 +185,12 @@ func handleFile(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
 		}
 	}
 
-	// * `GetFileDirectURL` ile dosyayı doğrudan indirebileceğimiz bir URL alırız.
+	// Dosyayı Telegram sunucularından indir.
 	fileURL, err := bot.GetFileDirectURL(fileID)
 	if err != nil {
 		log.Printf("Dosya URL'si alınamadı: %v", err)
 		return
 	}
-	// * Standart Go `net/http` paketi ile dosyayı indir.
 	resp, err := http.Get(fileURL)
 	if err != nil {
 		log.Printf("Dosya indirilemedi: %v", err)
@@ -203,7 +198,7 @@ func handleFile(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
 	}
 	defer resp.Body.Close()
 
-	// * İndirilen veriyi `Gelenler` klasöründeki yeni bir dosyaya yaz.
+	// İndirilen dosyayı ana klasöre kaydet.
 	savePath := filepath.Join(config.BaseDir, fileName)
 	file, err := os.Create(savePath)
 	if err != nil {
@@ -227,28 +222,34 @@ func handleFile(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
 	bot.Send(reply)
 }
 
-// handleCallbackQuery, kullanıcıların inline butonlara (örn: silme onayı)
-// tıkladığında gönderilen geri çağrı isteklerini işler.
+// Inline butonlardan gelen geri aramaları (callback) yönetir.
+// Örneğin `/sil` komutundaki "Evet/İptal" butonları veya görev yöneticisindeki
+// "Sonraki Sayfa" butonu buraya düşer.
 func handleCallbackQuery(bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery) {
-	// * `NewCallback`, butona basıldıktan sonraki "yükleniyor" animasyonunu durdurur.
+	// Telegram'a "isteği aldım, bekleme simgesini kaldır" mesajı gönder.
 	callback := tgbotapi.NewCallback(callbackQuery.ID, "")
 	bot.Request(callback)
 
 	data := callbackQuery.Data
-	// * Gelen veriyi (`sil_evet_dosya.txt`) `_` karakterine göre parçalara ayır.
-	parts := strings.SplitN(data, "_", 3)
-	if len(parts) < 3 {
+	parts := strings.SplitN(data, "_", 2)
+	if len(parts) < 1 {
 		return
 	}
 
-	command, action, payload := parts[0], parts[1], parts[2]
+	command := parts[0]
 	chatID := callbackQuery.Message.Chat.ID
 	messageID := callbackQuery.Message.MessageID
 
 	if command == "sil" {
+		// Callback verisi formatı: sil_evet_dosyaadi.txt veya sil_iptal_dosyaadi.txt
+		silParts := strings.SplitN(data, "_", 3)
+		if len(silParts) < 3 {
+			return
+		}
+
+		action, payload := silParts[1], silParts[2]
 		var newText string
 		if action == "evet" {
-			// * Kullanıcı "Evet" butonuna bastı, asıl silme işlemi burada gerçekleşir.
 			filename := payload
 			filePath, found := findFile(filename)
 			if !found {
@@ -256,16 +257,55 @@ func handleCallbackQuery(bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQ
 			} else if err := os.Remove(filePath); err != nil {
 				newText = fmt.Sprintf("❌ `%s` dosyası silinirken bir hata oluştu.", filename)
 			} else {
-				removeDescription(filename) // Dosyayı siliyorsak, açıklamasını da silelim.
+				// Dosya silindiyse, açıklaması da gitsin.
+				removeDescription(filename)
 				newText = fmt.Sprintf("🗑️ `%s` dosyası başarıyla silindi.", filename)
 			}
-		} else {
+		} else { // "iptal" durumu
 			newText = "👍 Silme işlemi iptal edildi."
 		}
-		// * Butonların bulunduğu orijinal mesajı, sonuç metniyle düzenle.
-		// * Bu, sohbet ekranının temiz kalmasını sağlar.
+
+		// Butonları kaldırıp yerine sonuç mesajını yaz.
 		editMsg := tgbotapi.NewEditMessageText(chatID, messageID, newText)
 		editMsg.ParseMode = "Markdown"
 		bot.Send(editMsg)
+
+	} else if command == "gorevler" {
+		// Görev yöneticisi callback'leri (sayfalama, sıralama).
+		// Format: gorevler_sayfa_cpu_desc_2 veya gorevler_sirala_ram_asc_1
+		gorevParts := strings.Split(data, "_")
+		if len(gorevParts) != 5 {
+			return // Hatalı formatı görmezden gel.
+		}
+
+		action := gorevParts[1]
+		sortKey := gorevParts[2]
+		sortDir := gorevParts[3]
+		page, _ := strconv.Atoi(gorevParts[4])
+
+		// Sıralama kriteri değiştiyse her zaman ilk sayfaya dön.
+		if action == "sirala" {
+			page = 1
+		}
+
+		// Yeni liste mesajını oluştur.
+		updatedMessage := createProcessListMessage(chatID, sortKey, sortDir, page)
+
+		// ÖNEMLİ: Telegram'da bir mesajın sadece metnini düzenlerseniz,
+		// altındaki butonlar kaybolur. Butonları korumak için, hem yeni metni
+		// hem de yeni butonları içeren tam bir `EditMessageText` objesi oluşturup
+		// tek seferde göndermek gerekir.
+		editMsg := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			updatedMessage.Text,
+		)
+		editMsg.ParseMode = "Markdown"
+		// Oluşturulan yeni butonları da isteğe ekle.
+		if markup, ok := updatedMessage.ReplyMarkup.(tgbotapi.InlineKeyboardMarkup); ok {
+			editMsg.ReplyMarkup = &markup
+		}
+
+		bot.Request(editMsg)
 	}
 }
