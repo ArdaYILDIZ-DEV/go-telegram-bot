@@ -8,31 +8,31 @@
   <img src="https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go">
   <img src="https://img.shields.io/badge/FFmpeg-00780B?style=for-the-badge&logo=ffmpeg&logoColor=white" alt="FFmpeg">
   <img src="https://img.shields.io/badge/yt--dlp-838383?style=for-the-badge&logo=youtube&logoColor=white" alt="yt-dlp">
+  <a href="https://github.com/ArdaYILDIZ-DEV/go-telegram-asistan/blob/main/LICENSE"><img src="https://img.shields.io/github/license/ArdaYILDIZ-DEV/go-telegram-asistan?style=for-the-badge&color=informational" alt="Lisans"></a>
   <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=for-the-badge">
 </p>
 
 ---
 
-
 ### İçindekiler
-1. [Proje Hakkında](#-proje-hakkında)
-2. [Özelliklerin Derinlemesine İncelenmesi](#-özelliklerin-derinlemesine-incelenmesi)
-   - [Dosya Yönetimi](#-gelişmiş-dosya-yönetimi)
-   - [Sistem Kontrolü](#-kapsamlı-sistem-kontrolü)
-   - [Medya İşlemleri](#-medya-indirme-ve-işleme)
-   - [Akıllı Otomasyonlar](#-akıllı-otomasyonlar)
-3. [Mimarî ve Tasarım Felsefesi](#-mimarî-ve-tasarım-felsefesi)
-4. [Kurulum ve Başlangıç](#-kurulum-ve-başlangıç)
+1. [Proje Hakkında](#proje-hakkında)
+2. [Özelliklerin Derinlemesine İncelenmesi](#özelliklerin-derinlemesine-incelenmesi)
+   - [Gelişmiş Dosya Yönetimi](#gelişmiş-dosya-yönetimi)
+   - [Kapsamlı Sistem Kontrolü](#kapsamlı-sistem-kontrolü)
+   - [Medya İndirme ve İşleme](#medya-indirme-ve-işleme)
+   - [Akıllı Otomasyonlar](#akıllı-otomasyonlar)
+3. [Mimarî ve Tasarım Felsefesi](#mimarî-ve-tasarım-felsefesi)
+4. [Kurulum ve Başlangıç](#kurulum-ve-başlangıç)
    - [Ön Gereksinimler](#ön-gereksinimler)
    - [Kurulum Adımları](#kurulum-adımları)
-5. [Yapılandırma Detayları](#-yapılandırma-detayları)
-6. [Kod Mimarisine Genel Bakış](#-kod-mimarisine-genel-bakış)
-7. [Katkıda Bulunma](#-katkıda-bulunma)
-8. [Lisans](#-lisans)
+5. [Yapılandırma Detayları](#yapılandırma-detayları)
+6. [Kod Mimarisine Genel Bakış](#kod-mimarisine-genel-bakış)
+7. [Katkıda Bulunma](#katkıda-bulunma)
+8. [Lisans](#lisans)
 
 ---
 
-### 📖 Proje Hakkında
+### Proje Hakkında
 
 **Go Telegram Asistan Botu**, sadece komut çalıştıran basit bir botun çok ötesindedir. Arka planda çalışan zamanlayıcılar, dosya sistemi olaylarını anlık olarak dinleyen izleyiciler ve Go'nun eşzamanlılık (concurrency) gücü sayesinde, sunucunuzla proaktif bir şekilde etkileşim kuran kişisel bir asistandır. Dosyalarınızı organize eder, ağ sorunlarını size bildirir ve uzun süren görevleri sizi engellemeden arka planda halleder.
 
@@ -42,9 +42,9 @@
 
 ---
 
-## ✨ Özelliklerin Derinlemesine İncelenmesi
+## Özelliklerin Derinlemesine İncelenmesi
 
-### 📁 Gelişmiş Dosya Yönetimi
+### Gelişmiş Dosya Yönetimi
 - **Listeleme ve Arama:**
   - `/liste` & `/klasor`: Standart listeleme.
   - `/ara <kelime>`: `filepath.Walk` kullanarak **tüm alt klasörlerde** rekürsif bir arama yapar ve bulunan dosyaların göreceli yollarını listeler.
@@ -55,7 +55,7 @@
   - `/aciklama_ekle`: Dosyalara eklenen açıklamalar, bot yeniden başlasa bile kaybolmayacak şekilde `metadata.json` dosyasında kalıcı olarak saklanır.
   - `/aciklama_ara`: Aramayı sadece dosya adlarıyla sınırlamaz, **tüm açıklamaların içeriğinde** de arama yaparak güçlü bir içerik tabanlı bulma yeteneği sunar.
 
-### 🖥️ Kapsamlı Sistem Kontrolü
+### Kapsamlı Sistem Kontrolü
 - **İnteraktif Görev Yöneticisi:**
   - `/gorevler`: `gopsutil` kütüphanesini kullanarak sistemdeki işlemleri listeler. Arayüz, **sayfalı (paginated)** ve **sıralanabilir** yapıdadır. Her buton tıklaması, yeni bir `CallbackQuery` ile botun mesajı düzenlemesini tetikleyerek dinamik bir kullanıcı deneyimi sağlar.
 - **Zaman Aşımı Korumalı Betik Yürütme:**
@@ -64,7 +64,7 @@
   - `/ss`: Windows üzerinde, harici bir programa ihtiyaç duymadan, doğrudan PowerShell'in .NET kütüphanelerine erişim yeteneğini kullanarak anlık ekran görüntüsü alır.
   - `/kayit_al`: Arka planda `FFmpeg` işlemini başlatır ve işlemin standart girdisine (`stdin`) bir `pipe` bağlar. `/kayit_durdur` komutu, bu `pipe`'a 'q' karakterini yazarak FFmpeg'in kaydı düzgün bir şekilde sonlandırıp dosyayı tamamlamasını sağlar.
 
-### 🌐 Medya İndirme ve İşleme
+### Medya İndirme ve İşleme
 - **Akıllı ve Esnek İndirme Motoru:**
   - `/indir`: Kullanıcının belirttiği kalite ve format tercihlerini bir "öncelik zinciri" haline getirerek `yt-dlp`'ye `-f` parametresi olarak sunar. Örneğin, `bestvideo[height<=?1080][ext=mp4]+bestaudio/best`. Bu, en uygun formatın bulunmasını garanti altına alır. İndirme süresince, `yt-dlp`'nin `--progress` çıktısı anlık olarak okunur, parse edilir ve Telegram mesajı düzenlenerek kullanıcıya ilerleme durumu bildirilir.
 - **Yüksek Hızlı, Kayıpsız Video Düzenleme:**
@@ -74,7 +74,7 @@
     1.  `palettegen`: Önce videonun belirtilen bölümünü analiz ederek en uygun 256 renkten oluşan özel bir renk paleti oluşturur.
     2.  `paletteuse`: Ardından, bu özel paleti kullanarak GIF'i oluşturur. Bu yöntem, renk geçişlerinde oluşan bozulmaları (dithering) en aza indirir ve çok daha canlı, yüksek kaliteli sonuçlar üretir.
 
-### ⚙️ Akıllı Otomasyonlar
+### Akıllı Otomasyonlar
 - **Olay Tabanlı "Magic Folder":**
   - `TelegramaGonder` klasörü, Go'nun `fsnotify` kütüphanesi ile sürekli izlenir. Bir dosya oluşturulduğunda veya üzerine yazıldığında (`fsnotify.Create`/`fsnotify.Write` olayları), zamanlayıcı anında tetiklenir, dosyayı bir `goroutine` içinde işlemeye alır, gönderir ve siler.
 - **Durum (Stateful) Odaklı Bildirimler:**
@@ -84,7 +84,7 @@
 
 ---
 
-### 🏛️ Mimarî ve Tasarım Felsefesi
+### Mimarî ve Tasarım Felsefesi
 - **Modülerlik:** Her dosya (`auth.go`, `file_manager.go`, `scheduler.go` vb.) tek bir sorumluluk alanına odaklanır. Bu, kodun okunabilirliğini ve bakımını kolaylaştırır.
 - **Eşzamanlılık (Concurrency):** `goroutine` ve `channel`'lar, indirme, betik çalıştırma gibi uzun süren işlemlerin botun ana akışını engellemesini önler. Bot, aynı anda birden çok komuta yanıt verebilir.
 - **Durum Güvenliği (State Safety):** Paylaşılan verilere (metadata, kayıt durumu vb.) erişim, `sync.Mutex` kilitleri ile korunarak "race condition" hatalarının önüne geçilir.
@@ -94,7 +94,7 @@
 
 ---
 
-## 🚀 Kurulum ve Başlangıç
+## Kurulum ve Başlangıç
 
 ### Ön Gereksinimler
 - **Go:** `1.18` veya üstü.
@@ -136,22 +136,22 @@
 
 ---
 
-### ⚙️ Yapılandırma Detayları
+### Yapılandırma Detayları
 `.env` dosyasında kullanılabilecek değişkenler:
 
 | Değişken | Gerekli? | Açıklama |
 | :--- | :---: | :--- |
-| `BOT_TOKEN` | ✅ **Evet** | Telegram'da `@BotFather`'dan alacağınız API token'ı. |
-| `ADMIN_CHAT_ID` | ✅ **Evet** | Botun tam yetkili yöneticisinin Telegram ID'si. Bu ID olmadan zamanlayıcı gibi özellikler çalışmaz. |
-| `ALLOWED_IDS` | ❌ Hayır | Botu kullanabilecek diğer kullanıcıların ID'leri (virgülle ayırın). |
-| `BASE_DIR`| ❌ Hayır | Botun çalışacağı ana klasör. Varsayılan olarak `Gelenler` klasörünü oluşturur. |
-| `MONITORED_PORTS` | ❌ Hayır | Periyodik olarak izlenecek portlar (virgülle ayırın). |
+| `BOT_TOKEN` | ✓ Evet | Telegram'da `@BotFather`'dan alacağınız API token'ı. |
+| `ADMIN_CHAT_ID` | ✓ Evet | Botun tam yetkili yöneticisinin Telegram ID'si. Bu ID olmadan zamanlayıcı gibi özellikler çalışmaz. |
+| `ALLOWED_IDS` | ✗ Hayır | Botu kullanabilecek diğer kullanıcıların ID'leri (virgülle ayırın). |
+| `BASE_DIR`| ✗ Hayır | Botun çalışacağı ana klasör. Varsayılan olarak `Gelenler` klasörünü oluşturur. |
+| `MONITORED_PORTS` | ✗ Hayır | Periyodik olarak izlenecek portlar (virgülle ayırın). |
 
 <p align="right">(<a href="#go-telegram-asistan-botu">başa dön</a>)</p>
 
 ---
 
-### 🏗️ Kod Mimarisine Genel Bakış
+### Kod Mimarisine Genel Bakış
 
 <details>
   <summary><strong>Proje Dosya Yapısı ve Sorumlulukları</strong></summary>
@@ -177,19 +177,16 @@
 <p align="right">(<a href="#go-telegram-asistan-botu">başa dön</a>)</p>
 
 ---
-## 🛠️ Kullanılan Teknolojiler
+### Kullanılan Teknolojiler
 
 <p align="left">
-  <!-- skillicons.dev ile gelenler (yönlendirmesiz) -->
   <img src="https://skillicons.dev/icons?i=go,git,github,powershell,vscode" />
-  
-  <!-- Manuel olarak eklenen ve yönlendirmesi kaldırılan logolar -->
   <img src="https://repository-images.githubusercontent.com/947861912/79d2548e-a5dc-420e-8fda-3e9368a7b668" alt="FFmpeg" height="48">
   <img src="https://repository-images.githubusercontent.com/307260205/b6a8d716-9c7b-40ec-bc44-6422d8b741a0" alt="yt-dlp" height="48">
 </p>
 
 ---
-### 🤝 Katkıda Bulunma
+### Katkıda Bulunma
 
 Bu proje kişisel kullanım için geliştirilmiştir, ancak her türlü fikir, öneri ve katkıya açıktır. Bir hata bulursanız veya yeni bir özellik önermek isterseniz, lütfen bir **[Issue](https://github.com/ArdaYILDIZ-DEV/go-telegram-asistan/issues)** açmaktan veya **[Pull Request](https://github.com/ArdaYILDIZ-DEV/go-telegram-asistan/pulls)** göndermekten çekinmeyin.
 
@@ -203,7 +200,7 @@ Bu proje kişisel kullanım için geliştirilmiştir, ancak her türlü fikir, �
 
 ---
 
-### 📜 Lisans
+### Lisans
 
 Bu proje [MIT Lisansı](https://github.com/ArdaYILDIZ-DEV/go-telegram-asistan/blob/main/LICENSE) ile lisanslanmıştır.
 
