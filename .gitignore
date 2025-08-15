@@ -11,3 +11,4 @@ Thumbs.db
 #application
 *.exe
 *.log
+*.log.*
