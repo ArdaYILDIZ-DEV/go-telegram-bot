@@ -192,7 +192,6 @@
   | `/duzenle` | Dosyaları otomatik olarak kategorilere ayırır. |
   | `/durum` | Temel sistem durumunu gösterir. |
   | `/sistem_bilgisi` | Ayrıntılı sistem bilgilerini raporlar (Yönetici). |
-  - **Gizlilik:** `.gitignore` dosyası ile `.env` ve `*.log` gibi hassas dosyaların repoya gönderilmesini engelleyin.
 
 </details>
 
