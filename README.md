@@ -113,8 +113,14 @@
    go mod tidy
    ```
 3. **Yapılandırma Dosyasını Oluşturun:**
+Proje kök dizininde .env dosyası oluşturun ve kendi bilgilerinizi girin:
    ```bash
-   .env` dosyasını kendi bilgilerinizle doldurun.
+   BOT_TOKEN=123456:ABC-DEF           # BotFather'dan aldığınız Telegram bot token
+   ADMIN_CHAT_ID=9876543210           # Yönetici Telegram kullanıcı ID'niz
+   ALLOWED_IDS=112233,445566          # (Opsiyonel) Yetkili diğer kullanıcı ID'leri, virgülle ayırın
+   BASE_DIR=C:/BotDosyalari           # (Opsiyonel) Botun çalışacağı ana dizin
+MONITORED_PORTS=80,443,3306        # (Opsiyonel) İzlenecek portlar
+   ```
 
 4. **Botu Çalıştırın:**
    ```bash
